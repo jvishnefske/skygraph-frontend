@@ -1,0 +1,112 @@
+<!DOCTYPE html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>client side js numerical analysis</title>
+<link rel="stylesheet" type="text/css" href="styles/screen.css">
+<!--script type="text/x-mathjax-config"-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/mathlex.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/mathjax/MathJax.js?config=default" type="text/javascript" charset="utf-8"><script src="js/Chart.min.js"></script>
+<!-- build:js scripts/parser.min.js -->
+<script src="scripts/parser.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/main.js" charset="utf-8">
+<!-- endbuild -->
+</script>
+
+</head>
+
+<div class=header>
+Skygraph home.  <a href="/game/">example html game</a>    <a href=graph.html>Pseudorandom Graph Page</a> <a href="parse.html">parser experiment</a>
+</div>
+<p>
+<script type="text/javascript" charset="utf-8">
+    var fillEquation = function(index){
+        var equations = fillEquation.examples[index];
+        var inputBox=$('#math-input');
+        inputBox.val(equations.f);
+        var e = jQuery.Event('keyup',{keycode:64});
+        inputBox.trigger(e);
+    }
+    fillEquation.examples=[
+        {label:'sine',f:'sin(x)',fint:'-cos(x)'},
+        {label:'line',limits:[[0,1]], f:'2*x',fint:'x^2'},
+        {label:'exponential',f:'e^x',fint:'function(x){return -cos(x)}'},
+        ];
+amples = 
+    $(document).ready(function(){
+        // populate examples.
+        var i;
+        var exampleDiv = $('.example-list');//.find('ul');
+        var listHTML="Examples:";
+        $.each(fillEquation.examples,function(index,equations){
+            listHTML+='<li><a href="#" onclick=fillEquation('+index+');>'+equations.label+'</a></li>'
+        });
+        exampleDiv.append(listHTML);//listHTML);
+           /* link.inner
+            var equations = examples[i];
+            var link=$.html('<a></a>');
+            link.attr('href','#')
+            link.attr('onclick','fillEquation(' + equations.f + ');')
+            exampleDiv.append()
+            */
+        
+    });
+</script>
+
+<div class="article">
+    <div class="example-list"><ul></ul></div>
+Type an equation: <input type="text" id="math-input" class="math-input">
+<label for="dimensions">dimensions</label>
+<input type="number" name="dimensions" id="dimensions" value="2" />
+<div id="equationInput" ></div>
+<!--label for="tex_input">Translated LaTeX Code</label><input id="tex_input"/-->
+<div class="tex-output"> <code></code> </div>
+<div id="js-out"></div>
+<div id="js-debug"></div>
+   <div id="debug-out" class="debug-out">
+   </div>
+<canvas id='myChart' width='400' height'=400'></canvas>
+<div id="math-display">\[ \]</div>
+        <input type="button" id="send-math" value="Calculate">
+        <div id="math-output">\[ \]</div>
+<div class="output">
+
+    <h4>trapazodial rule:</h4>
+$$ \int_a^bf(x)dx=\frac{b-a}{n} \left [  \frac{f(a)+f(b)}{2}+\sum_{i=1}^n {f \left( \left( \frac{i}{n}+a  \right ) \frac{b}{a+1}\right)  }\right ] +O(n^2) $$
+((\sin{x})) $\int{stuff dx}$
+        <a href="http://en.wikipedia.org/wiki/Numerical_integration">http://en.wikipedia.org/wiki/Numerical_integration</a>
+    <p></p>
+</div>
+      </div>
+<div class="article">
+<h1>Proposal: Interactive numerical method demonstration.</h1>
+<h2>CSC280 Senior Project</h2>
+<p><em>John Vishnefske</em></p>
+<p>Numerical computing has historically required specialized client software, or development systems to be installed on the client system. While web based platforms such as Wolfram alpha, and <a href="http://ipython.org/notebook.html">iPython</a> notebook provide an interactive numerical environment with many current systems computation is typically done on the server side, with instructions being passed to the server, and results being passed back to the server. While this allows a variety of native libraries to be utilized the fact that the processing is done on the server side presents a bottleneck as larger computation capabilities is provided to more concurrent users.  This is solved in <a href="http://ipython.org/notebook.html">iPython</a> notebook by allowing individual instances of the web server side to be installed by users, and run. My proposal takes the distributed approach a step further by doing the computation in the client browser. This has the potential to greatly reduce the computational cost on the server side allowing, more client connections than a centralized computational model. 
+My initial development goal is to develop a system that allows visual graphing of numerical efficiency of sparse grid numerical integration methods, and <a href="http://web.mit.edu/~wingated/www/introductions/mcmc-gibbs-intro.pdf">Markov Chain Monte Carlo</a> for multi- dimensional integration.<br>
+Current software work in the are includes the <a href="http://tasmanian.ornl.gov">Tasmanian Sparse Grid Project</a>. Typical usage of this library is to either implement the function as a c++ library, or to run, a wrapper program for Tasmanian that allows interfacing the console application with Matlab. Initial implementation could use this library to create a grid, and weight vector on the server side, and the client receiving this, and doing the actual function evaluation, and  weighted averaging.</p>
+<h2>Project Steps:</h2>
+<ul>
+<li><a href="https://www.skygraph.net"><em>Setup a web server with https certificate</em> -done</a></li>
+<li>Write a <a href="http://mathlex.org/quick-start">MathLex</a> parser for input of functions. (3 hours)</li>
+<li>Validate the parse tree to ensure all composite functions are available, and valid (2 hours)</li>
+<li>and equation can be translated to valid, secure javascript (2 hours)</li>
+<li>Evaluate Graphing libraries such as <a href="http://www.chartjs.org/">chart.js</a>, and <a href="http://www.jqplot.com/">jqplot</a> for there suitability to our use cases. (2 hours)</li>
+<li>create Data model for storing user state to server. (3 hours)</li>
+<li>create first iteration of web interface template (3 hours)</li>
+<li>enable user login authentication. (1 hour)</li>
+<li>enforcement of user authorization for model controller.</li>
+<li>basic equation evaluation for javascript function with precomputed spares grid, and weight vector.</li>
+<li>Monte Carlo evaluation over uniform distribution with builtin browser PRNG </li>
+<li>enable evaluation of user equations with text output. ()</li>
+<li>Incorporate graphical output (2 hours)</li>
+</ul>
+<h2>Future Consideration</h2>
+<ul>
+<li>Integration of existing javascript numerical libraries</li>
+<li>Option of evaluation some data as server side javascript.</li>
+<li>Output ipython notebook file format.</li>
+<li>Local storage api, and offline computation.</li>
+<li>quasi random numbers </li>
+<li>Metropolis-Hastings implementation for custom distributions.</li>
+</ul>
+</div>
