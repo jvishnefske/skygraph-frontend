@@ -20,7 +20,8 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
             var ctx = $('#myChart').get(0).getContext('2d');
             //chart = new Chart(ctx);
         }
-        chart.PolarArea(pts);
+        //chart.:w
+    //PolarArea(pts);
     }
     function treeToJS(tree) {
         //for the javascript emitter a terminal string is a current
@@ -36,7 +37,9 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
             var vars = [];
             for (var i = 0; i < count; ++i) {
                 var temp = this.pop();
-                if (temp[0] === false) throw new Error('Expected literal in parse tree.');
+                if (temp[0] === false) {
+                    throw new Error('Expected literal in parse tree.');
+                }
                 vars.append(temp + '');
             }
             return vars;
