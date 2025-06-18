@@ -1,9 +1,9 @@
 'use strict';
-(function($, MathJax, undefined) {
+(function() { // Removed jQuery and MathJax from IIFE arguments, MathJax is global
 
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() { // Replaced $(document).ready
     var reservedWords = ['abstract', 'arguments', 'boolean', 'break', 'byte', 'case', 'catch', 'char', 'class*', 'const', 'continue', 'debugger', 'default', 'delete', 'do', 'double', 'else', 'enum*', 'eval', 'export*', 'extends*', 'false', 'final', 'finally', 'float', 'for', 'function', 'goto', 'if', 'implements', 'import*', 'in', 'instanceof', 'int', 'interface', 'let', 'long', 'native', 'new', 'null', 'package', 'private', 'protected', 'public', 'return', 'short', 'static', 'super*', 'switch', 'synchronized', 'this', 'throw', 'throws', 'transient', 'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'];
-var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'Infinity', 'isFinite', 'isNaN', 'isPrototypeOf', 'length', 'Math', 'NaN', 'name', 'Number', 'Object', 'prototype', 'String', 'toString', 'undefined', 'valueOf'];
+    var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'Infinity', 'isFinite', 'isNaN', 'isPrototypeOf', 'length', 'Math', 'NaN', 'name', 'Number', 'Object', 'prototype', 'String', 'toString', 'undefined', 'valueOf'];
     reservedWords = reservedWords.concat(forbiddenWords);
     var chart;
     //get MathJax output object
@@ -17,7 +17,7 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
     }
     function plot(pts) {
         if (typeof chart === 'undefined') {
-            var ctx = $('#myChart').get(0).getContext('2d');
+            var ctx = document.getElementById('myChart').getContext('2d'); // Replaced $('#myChart').get(0)
             //chart = new Chart(ctx);
         }
         //chart.:w
@@ -30,8 +30,8 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
         // the stack contains type value pairs of the form [t,v]
         // where the type is a boolean true if terminal, false if nonterminal.
 
-        var jsDebug = $('#js-debug');
-        jsDebug.text('jsdebug:');
+        var jsDebug = document.getElementById('js-debug'); // Replaced $('#js-debug')
+        jsDebug.textContent = 'jsdebug:'; // Replaced .text()
         var stack = [];
         stack.getTerminals = function(count) {
             var vars = [];
@@ -103,23 +103,23 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
     }
     var functionVars;
     // live output MathJax whenever a key is pressed
-    $('#math-input').on('keyup', function(evt) {
+    document.getElementById('math-input').addEventListener('keyup', function(evt) { // Replaced .on('keyup')
 
 
-        var math = $(this).val();
+        var math = this.value; // Replaced $(this).val()
         var tree;
-            $(this).css('color', 'black');
+            this.style.color = 'black'; // Replaced $(this).css()
             if (math.length > 0) {
                 try {
                     tree = MathLex.parse(math);
                     //var sageText = MathLex.render(tree,);
-                    $('#debug-out').text(JSON.stringify(tree));
+                    document.getElementById('debug-out').textContent = JSON.stringify(tree); // Replaced .text()
                     //$('.math-output')
                     //MathJax.Hub.Queue(['Text',mjDisplayBox,latex]);
 
                 } catch (err) {
-                    $(this).css('color', 'red');
-                    $('#debug').text(err);
+                    this.style.color = 'red'; // Replaced $(this).css()
+                    document.getElementById('debug').textContent = err; // Replaced .text()
                     //window.alert(err);
                     throw err;
                 }
@@ -131,7 +131,7 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
             var strFunction = treeToJS(tree);
             //functionVars=functionVars.concat(5);
             eval('var myFunc=function(' + functionVars.join(',') + '){return ' + strFunction + '};');
-            $('#js-out').text('js:' + String(myFunc));
+            document.getElementById('js-out').textContent = 'js:' + String(myFunc); // Replaced .text()
                     //));
             //treeToJS(tree);
             //$("#js-out").text("yep, js works");
@@ -168,5 +168,5 @@ var forbiddenWords = ['Array', 'Date', 'eval', 'function', 'hasOwnProperty', 'In
 
             );
 */
-            });
-}(jQuery, MathJax));
+    });
+})(); // Removed jQuery and MathJax from IIFE arguments
