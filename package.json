@@ -25,5 +25,16 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvishnefske/skygraph-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jvishnefske/skygraph-frontend/issues"
+  },
+  "homepage": "https://github.com/jvishnefske/skygraph-frontend#readme"
 }
