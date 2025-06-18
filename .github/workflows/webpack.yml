@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: NodeJS with Test
 
 on:
   push:
@@ -26,4 +26,3 @@ jobs:
       run: |
         npm install
         npm test
-        npx webpack
